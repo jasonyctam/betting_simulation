@@ -54,6 +54,8 @@ class mainAnalysis():
         # Example use
         result_dict = {'bankroll': 1000}
 
+        results_collection = []
+
         # Simulate a few rounds
         result_dict = self.simulate_bet("color", "red", 100, result_dict['bankroll'])
         print(result_dict)
@@ -68,12 +70,18 @@ class mainAnalysis():
 ###################################################################
 
     def spin_wheel(self):
+        """
+        This method simulates the spinning of the roulette wheel, and returns a random number between 0 and 36 inclusively
+        """
         return random.randint(0, 36)
 
 ###################################################################
 ###################################################################
 
-    def get_color(self, number):
+    def get_color(self, number: int) -> str:
+        """
+        This method returns the colour of a number on the roulette wheel
+        """
         if number == 0:
             return 'green'
         elif number in self.RED_NUMBERS:
@@ -85,7 +93,9 @@ class mainAnalysis():
 ###################################################################
 
     def simulate_bet(self, bet_type, choice, bet_amount, bankroll):
-
+        """
+        This method simulates the betting process of a single round in a roulette game
+        """
         result_dict = {}
 
         if bet_amount > bankroll:
@@ -136,7 +146,7 @@ class mainAnalysis():
                 bankroll -= bet_amount
                 bet_result = 'lose'
 
-        return {'bet_result': bet_result, 'bankroll': bankroll}
+        return {'spin_result': result, 'bet_result': bet_result, 'bankroll': bankroll}
 
 ###################################################################
 ###################################################################
