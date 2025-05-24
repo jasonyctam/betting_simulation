@@ -57,23 +57,35 @@ class mainAnalysis():
         results_collection = []
 
         # Simulate a few rounds
-        result_dict = self.simulate_bet("colour", "red", 100, result_dict['bankroll'])
-        print(result_dict)
-        result_dict = self.simulate_bet("parity", "odd", 50, result_dict['bankroll'])
-        print(result_dict)
-        result_dict = self.simulate_bet("number", 17, 20, result_dict['bankroll'])
-        print(result_dict)
+        # result_dict = self.simulate_bet("colour", "red", 100, result_dict['bankroll'])
+        # print(result_dict)
+        # result_dict = self.simulate_bet("parity", "odd", 50, result_dict['bankroll'])
+        # print(result_dict)
+        # result_dict = self.simulate_bet("number", 17, 20, result_dict['bankroll'])
+        # print(result_dict)
+
+        control_colour_results = self.control(bet_type = 'colour', bet_selection = 'red')
+
+        for key in control_colour_results:
+            print(key, control_colour_results[key])
+
 
         return
 
 ###################################################################
 ###################################################################
 
-    def control(self):
+    def control(self, bet_type, bet_selection):
 
-        print('control')
+        results_collection = {}
+        result_dict = {'bankroll': 1000}
+        bet_amount = 10
 
-        return
+        for i in range(0,10):
+            result_dict = self.simulate_bet("colour", "red", bet_amount, result_dict['bankroll'])
+            results_collection[i+1] = result_dict
+
+        return results_collection
 
 ###################################################################
 ###################################################################
