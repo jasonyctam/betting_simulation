@@ -114,6 +114,8 @@ class mainAnalysis():
         result = self.spin_wheel()
         colour = self.get_colour(result)
         parity = 'even' if result % 2 == 0 else 'odd'
+        if result == 0:
+            parity = 'zero'
 
         bet_result = ''
 
