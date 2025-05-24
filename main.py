@@ -57,7 +57,7 @@ class mainAnalysis():
         results_collection = []
 
         # Simulate a few rounds
-        result_dict = self.simulate_bet("color", "red", 100, result_dict['bankroll'])
+        result_dict = self.simulate_bet("colour", "red", 100, result_dict['bankroll'])
         print(result_dict)
         result_dict = self.simulate_bet("parity", "odd", 50, result_dict['bankroll'])
         print(result_dict)
@@ -78,7 +78,7 @@ class mainAnalysis():
 ###################################################################
 ###################################################################
 
-    def get_color(self, number: int) -> str:
+    def get_colour(self, number: int) -> str:
         """
         This method returns the colour of a number on the roulette wheel
         """
@@ -104,8 +104,8 @@ class mainAnalysis():
             return result_dict
 
         result = self.spin_wheel()
-        color = self.get_color(result)
-        print(f"Wheel landed on {result} ({color})")
+        colour = self.get_colour(result)
+        print(f"Wheel landed on {result} ({colour})")
 
         bet_result = ''
 
@@ -120,8 +120,8 @@ class mainAnalysis():
                 bankroll -= bet_amount
                 bet_result = 'lose'
 
-        elif bet_type == "color":
-            if color == choice:
+        elif bet_type == "colour":
+            if colour == choice:
                 winnings = bet_amount
                 print(f"You won! Payout: {winnings}")
                 bankroll += winnings
@@ -146,7 +146,13 @@ class mainAnalysis():
                 bankroll -= bet_amount
                 bet_result = 'lose'
 
-        return {'spin_result': result, 'bet_result': bet_result, 'bankroll': bankroll}
+        output_dict = {}
+        output_dict['spin-result'] = result
+        output_dict['bet-result'] = bet_result
+        output_dict['bankroll'] = bankroll
+        output_dict['colour'] = colour
+
+        return output_dict
 
 ###################################################################
 ###################################################################
