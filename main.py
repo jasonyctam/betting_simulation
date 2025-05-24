@@ -10,6 +10,7 @@ import time
 from termcolor import colored # For printing coloured text in terminal
 import colorama # For making coloured text work in Git Bash (MinuTTY)
 import random
+import json
 
 
 ###################################################################
@@ -69,7 +70,10 @@ class mainAnalysis():
         for key in control_colour_results:
             print(key, control_colour_results[key])
 
-
+        # Writing to sample.json
+        json_object = json.dumps(control_colour_results, indent=4)
+        with open("sample.json", "w") as outfile:
+            outfile.write(json_object)
         return
 
 ###################################################################
