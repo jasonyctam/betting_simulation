@@ -69,7 +69,16 @@ class mainAnalysis():
 ###################################################################
 ###################################################################
 
-    def spin_wheel(self):
+    def control(self):
+
+        print('control')
+
+        return
+
+###################################################################
+###################################################################
+
+    def spin_wheel(self) -> int:
         """
         This method simulates the spinning of the roulette wheel, and returns a random number between 0 and 36 inclusively
         """
@@ -92,58 +101,49 @@ class mainAnalysis():
 ###################################################################
 ###################################################################
 
-    def simulate_bet(self, bet_type, choice, bet_amount, bankroll):
+    def simulate_bet(self, bet_type, choice, bet_amount, bankroll) -> dict:
         """
         This method simulates the betting process of a single round in a roulette game
         """
         result_dict = {}
 
         if bet_amount > bankroll:
-            print('Insufficient Funds')
             result_dict = {'bet_result': 'Not played', 'bankroll': bankroll}
             return result_dict
 
         result = self.spin_wheel()
         colour = self.get_colour(result)
         parity = 'even' if result % 2 == 0 else 'odd'
-        print(f"Wheel landed on {result} ({colour})")
 
         bet_result = ''
 
         if bet_type == "number":
             if result == choice:
                 winnings = bet_amount * 35
-                print(f"You won! Payout: {winnings}")
                 bankroll += winnings
                 bet_result = 'win'
             else:
-                print("You lost.")
                 bankroll -= bet_amount
                 bet_result = 'lose'
 
         elif bet_type == "colour":
             if colour == choice:
                 winnings = bet_amount
-                print(f"You won! Payout: {winnings}")
                 bankroll += winnings
                 bet_result = 'win'
             else:
-                print("You lost.")
                 bankroll -= bet_amount
                 bet_result = 'lose'
 
         elif bet_type == "parity":
             if result == 0:
-                print("You lost.")
                 bankroll -= bet_amount
                 bet_result = 'lose'
             elif (result % 2 == 0 and choice == "even") or (result % 2 == 1 and choice == "odd"):
                 winnings = bet_amount
-                print(f"You won! Payout: {winnings}")
                 bankroll += winnings
                 bet_result = 'win'
             else:
-                print("You lost.")
                 bankroll -= bet_amount
                 bet_result = 'lose'
 
