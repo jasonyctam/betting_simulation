@@ -105,6 +105,7 @@ class mainAnalysis():
 
         result = self.spin_wheel()
         colour = self.get_colour(result)
+        parity = 'even' if result % 2 == 0 else 'odd'
         print(f"Wheel landed on {result} ({colour})")
 
         bet_result = ''
@@ -151,6 +152,7 @@ class mainAnalysis():
         output_dict['bet-result'] = bet_result
         output_dict['bankroll'] = bankroll
         output_dict['colour'] = colour
+        output_dict['parity'] = parity
 
         return output_dict
 
