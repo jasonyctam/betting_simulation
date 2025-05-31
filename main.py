@@ -75,6 +75,30 @@ class mainAnalysis():
                 "bet_amount": 10,
                 "repetitions": 10,
                 "iterations": 10
+            },
+            "black": {
+                "bet_type": 'colour',
+                "bet_selection": 'black',
+                "bankroll": 1000,
+                "bet_amount": 10,
+                "repetitions": 10,
+                "iterations": 10
+            },
+            "odd": {
+                "bet_type": 'parity',
+                "bet_selection": 'odd',
+                "bankroll": 1000,
+                "bet_amount": 10,
+                "repetitions": 10,
+                "iterations": 10
+            },
+            "even": {
+                "bet_type": 'parity',
+                "bet_selection": 'even',
+                "bankroll": 1000,
+                "bet_amount": 10,
+                "repetitions": 10,
+                "iterations": 10
             }
         }
 
