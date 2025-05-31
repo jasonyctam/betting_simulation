@@ -12,6 +12,8 @@ import colorama # For making coloured text work in Git Bash (MinuTTY)
 import json
 import pandas as pd
 import plotly.graph_objects as go
+from scipy.stats import norm
+import numpy as np
 
 
 ###################################################################
@@ -82,12 +84,43 @@ class mainAnalysis():
                 showlegend=False   # removes legend
             ))
 
+        # Extract final bankrolls
+        final_bankrolls = [trace[-1]["bankroll"] for trace in results]
+
+        # Fit normal distribution
+        mu, std = norm.fit(final_bankrolls)
+
+        # Create y values (bankroll) and corresponding x values (PDF)
+        y_vals = np.linspace(min(final_bankrolls) - 3*std, max(final_bankrolls) + 3*std, 200)
+        pdf_vals = norm.pdf(y_vals, mu, std)
+
+        # Normalize PDF height to match the y-axis scale (e.g., max bankroll)
+        pdf_scaled = pdf_vals * max(final_bankrolls) * 2  # Scale for visibility
+
+        # Add vertical normal distribution on secondary x-axis
+        fig.add_trace(go.Scatter(
+            x=pdf_scaled + len(results[0]) + 1,  # offset to right of plot
+            y=y_vals,
+            mode='lines',
+            line=dict(color='cyan', width=2, dash='dot'),
+            hovertemplate=(
+                    "μ (mean): %{customdata[0]:.2f}<br>" +
+                    "σ (std): %{customdata[1]:.2f}<extra></extra>"
+                ),
+            customdata=np.column_stack([[mu] * len(y_vals), [std] * len(y_vals)]),
+            showlegend=False
+        ))
+
         fig.update_layout(
             title="Bankroll Evolution",
             xaxis_title="Round",
             yaxis_title="Bankroll",
             template='plotly_dark',
-            hovermode=False  # disables hover behavior entirely
+            hovermode='closest',  # disables hover behavior entirely
+            hoverlabel=dict(
+                bgcolor='#222',  # dark grey background
+                font=dict(color='#00ffff')  # cyan text
+            )
         )
 
         return fig
