@@ -11,6 +11,7 @@ from termcolor import colored # For printing coloured text in terminal
 import colorama # For making coloured text work in Git Bash (MinuTTY)
 import random
 import json
+from tqdm import tqdm
 
 
 ###################################################################
@@ -78,9 +79,6 @@ class mainAnalysis():
 
         control_colour_results = self.control(bet_configurations[0])
 
-        # for key in control_colour_results:
-        #     print(key, control_colour_results[key])
-
         # Writing to sample.json
         json_object = json.dumps(control_colour_results, indent=4)
         with open("sample.json", "w") as outfile:
@@ -110,7 +108,7 @@ class mainAnalysis():
         iteration_collection = []
         result_dict = {'bankroll': bankroll}
 
-        for j in range(0,iterations):
+        for j in tqdm(range(0,iterations)):
             repetition_collection = []
             for i in range(0,repetitions):
                 result_dict = self.simulate_bet(bet_type, bet_selection, bet_amount, result_dict['bankroll'])
