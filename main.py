@@ -69,8 +69,8 @@ class mainAnalysis():
 
         starting_bankroll = 1000
         bet_amount = 10
-        repetitions = 1000
-        iterations = 1000
+        repetitions = 100
+        iterations = 100
 
         bet_configurations = {
             "red": {
@@ -139,10 +139,11 @@ class mainAnalysis():
         iterations = bet_configurations["iterations"]
 
         iteration_collection = []
-        result_dict = {'bankroll': bankroll}
+        initial_result_dict = {'bankroll': bankroll}
 
         for j in tqdm(range(0,iterations)):
-            repetition_collection = []
+            repetition_collection = [initial_result_dict]
+            result_dict = initial_result_dict
             for i in range(0,repetitions):
                 result_dict = self.simulate_bet(bet_type, bet_selection, bet_amount, result_dict['bankroll'])
                 repetition_collection.append(result_dict)
