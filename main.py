@@ -43,6 +43,7 @@ class mainAnalysis():
         self.BLACK_NUMBERS = {
             2,4,6,8,10,11,13,15,17,20,22,24,26,28,29,31,33,35
         }
+        self.CONTROL_RESULTS_DIR = "control_results/"
 
         return
 
@@ -66,8 +67,8 @@ class mainAnalysis():
         # result_dict = self.simulate_bet("number", 17, 20, result_dict['bankroll'])
         # print(result_dict)
 
-        bet_configurations = [
-            {
+        bet_configurations = {
+            "red": {
                 "bet_type": 'colour',
                 "bet_selection": 'red',
                 "bankroll": 1000,
@@ -75,14 +76,17 @@ class mainAnalysis():
                 "repetitions": 10,
                 "iterations": 10
             }
-        ]
+        }
 
-        control_colour_results = self.control(bet_configurations[0])
+        for key in bet_configurations:
+            print("Processing control simulation for: " + key)
+            control_results = self.control(bet_configurations[key])
 
-        # Writing to sample.json
-        json_object = json.dumps(control_colour_results, indent=4)
-        with open("sample.json", "w") as outfile:
-            outfile.write(json_object)
+            # Writing to sample.json
+            json_object = json.dumps(control_results, indent=4)
+            with open(self.CONTROL_RESULTS_DIR+key+".json", "w") as outfile:
+                outfile.write(json_object)
+
         return
 
 ###################################################################
