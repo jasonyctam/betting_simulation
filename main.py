@@ -65,10 +65,21 @@ class mainAnalysis():
         # result_dict = self.simulate_bet("number", 17, 20, result_dict['bankroll'])
         # print(result_dict)
 
-        control_colour_results = self.control(bet_type = 'colour', bet_selection = 'red')
+        bet_configurations = [
+            {
+                "bet_type": 'colour',
+                "bet_selection": 'red',
+                "bankroll": 1000,
+                "bet_amount": 10,
+                "repetitions": 10,
+                "iterations": 10
+            }
+        ]
 
-        for key in control_colour_results:
-            print(key, control_colour_results[key])
+        control_colour_results = self.control(bet_configurations[0])
+
+        # for key in control_colour_results:
+        #     print(key, control_colour_results[key])
 
         # Writing to sample.json
         json_object = json.dumps(control_colour_results, indent=4)
@@ -79,17 +90,34 @@ class mainAnalysis():
 ###################################################################
 ###################################################################
 
-    def control(self, bet_type, bet_selection):
+    def control(self, bet_configurations: dict) -> list[list]:
+        #############################
+        # Produce control data to examine any intrinsic biases of tools/methods used
+        # Start the initial bankroll at an amount, say 1000
+        # Keep a constant bet amount, say $10 that is at least a couple of orders magnitude smaller
+        # Keep a constant colour or parity bet selection, so that the probability of winning can be reflected on the outcome
+        # Each option has a winning probability of 18/37, and a winning return of 200% of the bet amount
+        # The end bankroll should theoretically be close to 1000 + (10*18/37 - 10* 19/37) = 1000-0.27 = approximately 1000
+        #############################
 
-        results_collection = {}
-        result_dict = {'bankroll': 1000}
-        bet_amount = 10
+        bet_type = bet_configurations["bet_type"]
+        bet_selection = bet_configurations["bet_selection"]
+        bankroll = bet_configurations["bankroll"]
+        bet_amount = bet_configurations["bet_amount"]
+        repetitions = bet_configurations["repetitions"]
+        iterations = bet_configurations["iterations"]
 
-        for i in range(0,10):
-            result_dict = self.simulate_bet("colour", "red", bet_amount, result_dict['bankroll'])
-            results_collection[i+1] = result_dict
+        iteration_collection = []
+        result_dict = {'bankroll': bankroll}
 
-        return results_collection
+        for j in range(0,iterations):
+            repetition_collection = []
+            for i in range(0,repetitions):
+                result_dict = self.simulate_bet(bet_type, bet_selection, bet_amount, result_dict['bankroll'])
+                repetition_collection.append(result_dict)
+            iteration_collection.append(repetition_collection)
+
+        return iteration_collection
 
 ###################################################################
 ###################################################################
