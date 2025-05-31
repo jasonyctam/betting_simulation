@@ -67,38 +67,43 @@ class mainAnalysis():
         # result_dict = self.simulate_bet("number", 17, 20, result_dict['bankroll'])
         # print(result_dict)
 
+        starting_bankroll = 1000
+        bet_amount = 10
+        repetitions = 10
+        iterations = 10
+
         bet_configurations = {
             "red": {
                 "bet_type": 'colour',
                 "bet_selection": 'red',
-                "bankroll": 1000,
-                "bet_amount": 10,
-                "repetitions": 10,
-                "iterations": 10
+                "bankroll": starting_bankroll,
+                "bet_amount": bet_amount,
+                "repetitions": repetitions,
+                "iterations": iterations
             },
             "black": {
                 "bet_type": 'colour',
                 "bet_selection": 'black',
-                "bankroll": 1000,
-                "bet_amount": 10,
-                "repetitions": 10,
-                "iterations": 10
+                "bankroll": starting_bankroll,
+                "bet_amount": bet_amount,
+                "repetitions": repetitions,
+                "iterations": iterations
             },
             "odd": {
                 "bet_type": 'parity',
                 "bet_selection": 'odd',
-                "bankroll": 1000,
-                "bet_amount": 10,
-                "repetitions": 10,
-                "iterations": 10
+                "bankroll": starting_bankroll,
+                "bet_amount": bet_amount,
+                "repetitions": repetitions,
+                "iterations": iterations
             },
             "even": {
                 "bet_type": 'parity',
                 "bet_selection": 'even',
-                "bankroll": 1000,
-                "bet_amount": 10,
-                "repetitions": 10,
-                "iterations": 10
+                "bankroll": starting_bankroll,
+                "bet_amount": bet_amount,
+                "repetitions": repetitions,
+                "iterations": iterations
             }
         }
 
