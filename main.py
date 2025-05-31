@@ -69,8 +69,8 @@ class mainAnalysis():
 
         starting_bankroll = 1000
         bet_amount = 10
-        repetitions = 10
-        iterations = 10
+        repetitions = 1000
+        iterations = 1000
 
         bet_configurations = {
             "red": {
