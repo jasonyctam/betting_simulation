@@ -50,19 +50,24 @@ class mainAnalysis():
         This method is executed when this code is executed independently
         """
 
-        file_name = self.CONTROL_RESULTS_DIR+'red.json'
+        # control_config = ['red', 'black', 'odd', 'even']
+        control_config = ['red']
 
-        results = self.load_json(file_name)
+        for config in control_config:
 
-        red_control_bankroll = self.plot_bankroll_evolution(results)
-        red_control_bankroll.show()
+            file_name = self.CONTROL_RESULTS_DIR + config + '.json'
+
+            results = self.load_json(file_name)
+
+            red_control_bankroll = self.plot_bankroll_evolution(results, config)
+            red_control_bankroll.show()
 
         return
 
 ###################################################################
 ###################################################################
 
-    def plot_bankroll_evolution(self, results: list):
+    def plot_bankroll_evolution(self, results: list, config: str):
 
         fig = go.Figure()
 
@@ -112,7 +117,7 @@ class mainAnalysis():
         ))
 
         fig.update_layout(
-            title="Bankroll Evolution",
+            title="Bankroll Evolution (" + config + ")",
             xaxis_title="Round",
             yaxis_title="Bankroll",
             template='plotly_dark',
@@ -120,7 +125,33 @@ class mainAnalysis():
             hoverlabel=dict(
                 bgcolor='#222',  # dark grey background
                 font=dict(color='#00ffff')  # cyan text
-            )
+            ),
+            showlegend=False,
+            legend=dict(
+                x=1.05,  # Push to the right if needed
+                y=1,
+                bgcolor='rgba(0,0,0,0)',
+                font=dict(color='cyan')
+            ),
+            annotations=[
+                dict(
+                    x=1.02,
+                    y=1.0,
+                    xref='paper',
+                    yref='paper',
+                    text=f"Normal Fit:<br>μ = {mu:.2f}<br>σ = {std:.2f}",
+                    showarrow=False,
+                    align="left",
+                    font=dict(
+                        size=12,
+                        color="cyan"
+                    ),
+                    bgcolor="#222",
+                    bordercolor="cyan",
+                    borderwidth=1,
+                    borderpad=5
+                )
+            ]
         )
 
         return fig
