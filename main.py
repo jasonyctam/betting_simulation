@@ -67,62 +67,54 @@ class mainAnalysis():
 
         ###################################
 
-        # starting_bankroll = 1000
-        # bet_amount = 10
-        # repetitions = 100
-        # iterations = 100
+        starting_bankroll = 1000
+        bet_amount = 10
+        repetitions = 100
+        iterations = 100
 
-        # bet_configurations = {
-        #     "red": {
-        #         "bet_type": 'colour',
-        #         "bet_selection": 'red',
-        #         "bankroll": starting_bankroll,
-        #         "bet_amount": bet_amount,
-        #         "repetitions": repetitions,
-        #         "iterations": iterations
-        #     },
-        #     "black": {
-        #         "bet_type": 'colour',
-        #         "bet_selection": 'black',
-        #         "bankroll": starting_bankroll,
-        #         "bet_amount": bet_amount,
-        #         "repetitions": repetitions,
-        #         "iterations": iterations
-        #     },
-        #     "odd": {
-        #         "bet_type": 'parity',
-        #         "bet_selection": 'odd',
-        #         "bankroll": starting_bankroll,
-        #         "bet_amount": bet_amount,
-        #         "repetitions": repetitions,
-        #         "iterations": iterations
-        #     },
-        #     "even": {
-        #         "bet_type": 'parity',
-        #         "bet_selection": 'even',
-        #         "bankroll": starting_bankroll,
-        #         "bet_amount": bet_amount,
-        #         "repetitions": repetitions,
-        #         "iterations": iterations
-        #     }
-        # }
+        bet_configurations = {
+            "red": {
+                "bet_type": 'colour',
+                "bet_selection": 'red',
+                "bankroll": starting_bankroll,
+                "bet_amount": bet_amount,
+                "repetitions": repetitions,
+                "iterations": iterations
+            },
+            "black": {
+                "bet_type": 'colour',
+                "bet_selection": 'black',
+                "bankroll": starting_bankroll,
+                "bet_amount": bet_amount,
+                "repetitions": repetitions,
+                "iterations": iterations
+            },
+            "odd": {
+                "bet_type": 'parity',
+                "bet_selection": 'odd',
+                "bankroll": starting_bankroll,
+                "bet_amount": bet_amount,
+                "repetitions": repetitions,
+                "iterations": iterations
+            },
+            "even": {
+                "bet_type": 'parity',
+                "bet_selection": 'even',
+                "bankroll": starting_bankroll,
+                "bet_amount": bet_amount,
+                "repetitions": repetitions,
+                "iterations": iterations
+            }
+        }
 
-        # for key in bet_configurations:
-        #     print("Processing control simulation for: " + key)
-        #     control_results = self.control(bet_configurations[key])
+        for key in bet_configurations:
+            print("Processing control simulation for: " + key)
+            control_results = self.control(bet_configurations[key])
 
-        #     # Writing to sample.json
-        #     json_object = json.dumps(control_results, indent=4)
-        #     with open(self.CONTROL_RESULTS_DIR+key+".json", "w") as outfile:
-        #         outfile.write(json_object)
-
-        ###################################
-
-        results_collection = self.generate_repeated_result(10)
-
-        for i in range(len(results_collection)):
-            result = results_collection[i]
-            print(json.dumps(result, indent=4))
+            # Writing to sample.json
+            json_object = json.dumps(control_results, indent=4)
+            with open(self.CONTROL_RESULTS_DIR+key+".json", "w") as outfile:
+                outfile.write(json_object)
 
         return
 
@@ -152,10 +144,12 @@ class mainAnalysis():
 
         for j in tqdm(range(0,iterations)):
             repetition_collection = [initial_result_dict]
-            result_dict = initial_result_dict
-            for i in range(0,repetitions):
-                result_dict = self.simulate_bet(bet_type, bet_selection, bet_amount, result_dict['bankroll'])
-                repetition_collection.append(result_dict)
+            results_collection = self.generate_repeated_result(repetitions)
+            bet_result = initial_result_dict
+            for i in range(len(results_collection)):
+                result = results_collection[i]
+                bet_result = self.simulate_betting(bet_type, bet_selection, bet_amount, bet_result['bankroll'], result)
+                repetition_collection.append(bet_result)
             iteration_collection.append(repetition_collection)
 
         return iteration_collection
@@ -209,21 +203,14 @@ class mainAnalysis():
 ###################################################################
 ###################################################################
 
-    def simulate_bet(self, bet_type, choice, bet_amount, bankroll) -> dict:
+    def simulate_betting(self, bet_type, choice, bet_amount, bankroll, spin_result_dict) -> dict:
         """
-        This method simulates the betting process of a single round in a roulette game
+        This method simulates the betting result with the output of generate_repeated_result
         """
-        result_dict = {}
 
-        if bet_amount > bankroll:
-            result_dict = {'bet_result': 'Not played', 'bankroll': bankroll}
-            return result_dict
-
-        result = self.spin_wheel()
-        colour = self.get_colour(result)
-        parity = 'even' if result % 2 == 0 else 'odd'
-        if result == 0:
-            parity = 'zero'
+        result = spin_result_dict['spin-result']
+        colour = spin_result_dict['colour']
+        parity = spin_result_dict['parity']
 
         bet_result = ''
 
