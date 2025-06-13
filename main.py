@@ -128,7 +128,8 @@ class mainAnalysis():
         # Keep a constant bet amount, say $10 that is at least a couple of orders magnitude smaller
         # Keep a constant colour or parity bet selection, so that the probability of winning can be reflected on the outcome
         # Each option has a winning probability of 18/37, and a winning return of 200% of the bet amount
-        # The end bankroll should theoretically be close to 1000 + (10*18/37 - 10* 19/37) = 1000-0.27 = approximately 1000
+        # The end bankroll should theoretically be close to 1000 - (bet_amount * n) + (2 * bet_amount * n * 18/37)
+        # For n = 100, 1000 - 10*100 + (2*10*18/37*100) = 972.97 = approximately 973
         #############################
 
         bet_type = bet_configurations["bet_type"]
