@@ -55,9 +55,7 @@ class mainAnalysis():
         This method is executed when this code is executed independently
         """
         # Example use
-        result_dict = {'bankroll': 1000}
-
-        results_collection = []
+        # result_dict = {'bankroll': 1000}
 
         # Simulate a few rounds
         # result_dict = self.simulate_bet("colour", "red", 100, result_dict['bankroll'])
@@ -67,54 +65,64 @@ class mainAnalysis():
         # result_dict = self.simulate_bet("number", 17, 20, result_dict['bankroll'])
         # print(result_dict)
 
-        starting_bankroll = 1000
-        bet_amount = 10
-        repetitions = 100
-        iterations = 100
+        ###################################
 
-        bet_configurations = {
-            "red": {
-                "bet_type": 'colour',
-                "bet_selection": 'red',
-                "bankroll": starting_bankroll,
-                "bet_amount": bet_amount,
-                "repetitions": repetitions,
-                "iterations": iterations
-            },
-            "black": {
-                "bet_type": 'colour',
-                "bet_selection": 'black',
-                "bankroll": starting_bankroll,
-                "bet_amount": bet_amount,
-                "repetitions": repetitions,
-                "iterations": iterations
-            },
-            "odd": {
-                "bet_type": 'parity',
-                "bet_selection": 'odd',
-                "bankroll": starting_bankroll,
-                "bet_amount": bet_amount,
-                "repetitions": repetitions,
-                "iterations": iterations
-            },
-            "even": {
-                "bet_type": 'parity',
-                "bet_selection": 'even',
-                "bankroll": starting_bankroll,
-                "bet_amount": bet_amount,
-                "repetitions": repetitions,
-                "iterations": iterations
-            }
-        }
+        # starting_bankroll = 1000
+        # bet_amount = 10
+        # repetitions = 100
+        # iterations = 100
 
-        for key in bet_configurations:
-            print("Processing control simulation for: " + key)
-            control_results = self.control(bet_configurations[key])
+        # bet_configurations = {
+        #     "red": {
+        #         "bet_type": 'colour',
+        #         "bet_selection": 'red',
+        #         "bankroll": starting_bankroll,
+        #         "bet_amount": bet_amount,
+        #         "repetitions": repetitions,
+        #         "iterations": iterations
+        #     },
+        #     "black": {
+        #         "bet_type": 'colour',
+        #         "bet_selection": 'black',
+        #         "bankroll": starting_bankroll,
+        #         "bet_amount": bet_amount,
+        #         "repetitions": repetitions,
+        #         "iterations": iterations
+        #     },
+        #     "odd": {
+        #         "bet_type": 'parity',
+        #         "bet_selection": 'odd',
+        #         "bankroll": starting_bankroll,
+        #         "bet_amount": bet_amount,
+        #         "repetitions": repetitions,
+        #         "iterations": iterations
+        #     },
+        #     "even": {
+        #         "bet_type": 'parity',
+        #         "bet_selection": 'even',
+        #         "bankroll": starting_bankroll,
+        #         "bet_amount": bet_amount,
+        #         "repetitions": repetitions,
+        #         "iterations": iterations
+        #     }
+        # }
 
-            # Writing to sample.json
-            json_object = json.dumps(control_results, indent=4)
-            with open(self.CONTROL_RESULTS_DIR+key+".json", "w") as outfile:
-                outfile.write(json_object)
+        # for key in bet_configurations:
+        #     print("Processing control simulation for: " + key)
+        #     control_results = self.control(bet_configurations[key])
+
+        #     # Writing to sample.json
+        #     json_object = json.dumps(control_results, indent=4)
+        #     with open(self.CONTROL_RESULTS_DIR+key+".json", "w") as outfile:
+        #         outfile.write(json_object)
+
+        ###################################
+
+        results_collection = self.generate_repeated_result(10)
+
+        for i in range(len(results_collection)):
+            result = results_collection[i]
+            print(json.dumps(result, indent=4))
 
         return
 
@@ -160,6 +168,29 @@ class mainAnalysis():
         This method simulates the spinning of the roulette wheel, and returns a random number between 0 and 36 inclusively
         """
         return random.randint(0, 36)
+
+###################################################################
+###################################################################
+
+    def generate_repeated_result(self, iterations: int) -> list:
+        """
+        This method repeats the simulation of spinning of the roulette wheel, and returns a dictionary containing the result of each iteration
+        """
+        results_list = []
+
+        for i in range(iterations):
+            iteration_dict = {}
+            result = self.spin_wheel()
+            colour = self.get_colour(result)
+            parity = 'even' if result % 2 == 0 else 'odd'
+            if result == 0:
+                parity = 'zero'
+            iteration_dict['spin-result'] = result
+            iteration_dict['colour'] = colour
+            iteration_dict['parity'] = parity
+            results_list.append(iteration_dict)
+
+        return results_list
 
 ###################################################################
 ###################################################################
