@@ -139,12 +139,18 @@ class mainAnalysis():
         repetitions = bet_configurations["repetitions"]
         iterations = bet_configurations["iterations"]
 
+        spin_result_iteration_collection = []
+
+        for j in tqdm(range(0,iterations)):
+            results_collection = self.generate_repeated_result(repetitions)
+            spin_result_iteration_collection.append(results_collection)
+
         iteration_collection = []
         initial_result_dict = {'bankroll': bankroll}
 
-        for j in tqdm(range(0,iterations)):
+        for j in tqdm(range(len(spin_result_iteration_collection))):
             repetition_collection = [initial_result_dict]
-            results_collection = self.generate_repeated_result(repetitions)
+            results_collection = spin_result_iteration_collection[j]
             bet_result = initial_result_dict
             for i in range(len(results_collection)):
                 result = results_collection[i]
@@ -166,13 +172,13 @@ class mainAnalysis():
 ###################################################################
 ###################################################################
 
-    def generate_repeated_result(self, iterations: int) -> list:
+    def generate_repeated_result(self, repetitions: int) -> list:
         """
         This method repeats the simulation of spinning of the roulette wheel, and returns a dictionary containing the result of each iteration
         """
         results_list = []
 
-        for i in range(iterations):
+        for i in range(repetitions):
             iteration_dict = {}
             result = self.spin_wheel()
             colour = self.get_colour(result)
